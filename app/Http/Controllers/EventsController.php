@@ -6,6 +6,7 @@ use App\Event;
 use App\Services\GoogleCalender;
 use Carbon\Carbon;
 use DateTime;
+use Google_Service_Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,7 +83,10 @@ class EventsController extends Controller
         return redirect('/events');
     }
     public function destroy(Event $event,GoogleCalender $calender){
-        $calender->deleteEvent($event->calender->id,$event->id);
+        try {
+            $calender->deleteEvent($event->calender->id,$event->id);
+        } catch (Google_Service_Exception $e){}
+
         $event->delete();
         return back();
     }
