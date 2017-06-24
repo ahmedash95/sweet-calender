@@ -5,6 +5,7 @@ namespace App;
 use App\Contracts\GoogleUpdateToken;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Redis;
 
 class User extends Authenticatable implements GoogleUpdateToken
 {
@@ -68,5 +69,18 @@ class User extends Authenticatable implements GoogleUpdateToken
             'refresh_token' => $token['refresh_token'],
             'expires_in' => $token['expires_in'],
         ]);
+    }
+
+    public function getTelegramId(){
+        return Redis::get("user:{$this->id}:telegram");
+    }
+
+    public static function findByTelegramId($id){
+        $keys = Redis::keys('user:*:telegram');
+        $users = collect($keys)->combine(Redis::mget(...$keys));
+        $key = $users->search($id);
+        if(!$key) return null;
+        $id = str_replace(['user:',':telegram'],'',$key);
+        return static::find($id);
     }
 }

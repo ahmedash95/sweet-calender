@@ -11,6 +11,9 @@
 |
 */
 
+use App\Notifications\SendTelegramNotification;
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -28,5 +31,7 @@ Route::post('/third-parties/google/remove ','ThirdPartiesController@removeGoogle
 
 Route::get('/settings/calender','AccountCalenderSettings@index');
 Route::post('/settings/calender','AccountCalenderSettings@update');
+
+Route::get('/settings/telegram/token','AccountSetttingsController@getTelegramToken');
 
 Route::resource('/events','EventsController');
