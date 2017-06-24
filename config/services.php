@@ -36,7 +36,7 @@ return [
     ],
 
     'telegram-bot-api' => [
-        'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR BOT TOKEN HERE')
+        'token' => env('TELEGRAM_BOT_TOKEN', null),
     ],
 
     'google' => [
@@ -44,5 +44,9 @@ return [
         'client_secret' => env('GOOGLE_SECRET'),
         'redirect' => ( php_sapi_name() == 'cli' ) ? null : url('/third-parties/google/callback'),
     ],
+
+    'botman' => [
+        'telegram_token' => env('TELEGRAM_BOT_TOKEN', null),
+    ]
 
 ];
